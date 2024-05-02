@@ -1,0 +1,40 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.0
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.http.routers.reverse-proxy.middlewares=reverse-proxy"
+      - "traefik.http.middlewares.reverse-proxy.chain=chain"
+      - "traefik.http.middlewares.reverse-proxy.chain.chain=proxy"
+      - "traefik.https.middlewares.reverse-proxy.proxy.config=6901:6901"
+      - "traefik.http.middlewares.reverse-proxy.proxy.config=4000:4000"
+
+  workbench:
+    # You have to build it first in kasm or use the build context
+    image: nicedexter/ubuntu-focal-desktop:1.15.0
+    # build: 
+    #   context: ./kasm/
+    shm_size: 512m
+    ports:
+      - "6901:6901"
+    environment:
+      VNC_PW: password
+    volumes:
+      - ~/workdir/THREE:/home/kasm-user/data
+    labels:
+      - "traefik.http.routers.workbench.rule=Host(`workbench.docker.localhost`)"
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`backend.docker.localhost`)"
