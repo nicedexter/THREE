@@ -11,9 +11,6 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      - "traefik.http.routers.reverse-proxy.middlewares=reverse-proxy"
-      - "traefik.http.middlewares.reverse-proxy.chain=chain"
-      - "traefik.http.middlewares.reverse-proxy.chain.chain=proxy"
       - "traefik.https.middlewares.reverse-proxy.proxy.config=6901:6901"
       - "traefik.http.middlewares.reverse-proxy.proxy.config=4000:4000"
 
