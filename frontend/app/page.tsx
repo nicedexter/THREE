@@ -13,11 +13,12 @@ export default function Home() {
   }
 
   const handleIframUrl = (nb: number) => {
-    console.log('Iframe clicked')
     if (nb === 1) {
       setUrl('https://localhost:6901/')
-    } else {
+    } else if (nb === 2) {
       setUrl('https://localhost:6902')
+    } else if (nb === 3) {
+      setUrl('https://localhost:6903')
     }
     setSidebarVisible(!sidebarVisible)
   }
@@ -71,6 +72,15 @@ export default function Home() {
                     onClick={() => handleIframUrl(2)}
                   >
                     Terminal
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    style={{ width: 96, height: 96 }}
+                    onClick={() => handleIframUrl(3)}
+                  >
+                    Gitlab
                   </button>
                 </div>
                 <div>

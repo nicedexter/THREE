@@ -33,7 +33,7 @@ body {
 }
 
 .sidebar-hidden {
-  transform: translateX(-96%);
+  transform: translateX(-99%);
   transition: transform 0.5s;
 }
 
