@@ -8,13 +8,14 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
+RUN echo "<p><a href="http://172.17.0.1:4000/services">Services</a></p><p><a href="http://172.17.0.1:4000/api-docs">API</a></p><p><a href="http://172.17.0.1:5678">Workflow</a></p><p><a href="http://172.17.0.1:5432">Postgres</a></p>" > $HOME/Desktop/CHORUS.html
 
-RUN touch $HOME/Desktop/hello.txt
 RUN apt-get update \
     && apt-get install -y sudo \
     && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
     && rm -rf /var/lib/apt/list/*
 
+RUN wget https://images.unsplash.com/photo-1519681393784-d120267933ba -O /usr/share/backgrounds/bg_default.png
 
 ######### End Customizations ###########
 
