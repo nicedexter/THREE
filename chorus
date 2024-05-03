@@ -1,0 +1,4 @@
+#!/bin/env sh
+
+# echo a list of all the services that are running
+curl -s http://172.17.0.1:4000/services 

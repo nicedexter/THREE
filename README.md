@@ -3,7 +3,7 @@ A CHORUS sandbox
 
 
 See
-http://backend.docker.localhost/
+http://backend.docker.localhost/api-docs/
 https://localhost:6901/
 https://workbench.docker.localhost:6901/
 

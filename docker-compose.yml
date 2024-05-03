@@ -14,21 +14,6 @@ services:
       - "traefik.https.middlewares.reverse-proxy.proxy.config=6901:6901"
       - "traefik.http.middlewares.reverse-proxy.proxy.config=4000:4000"
 
-  workbench:
-    # You have to build it first in kasm or use the build context
-    image: nicedexter/ubuntu-focal-desktop:1.15.0
-    # build: 
-    #   context: ./kasm/
-    shm_size: 512m
-    ports:
-      - "6901:6901"
-    environment:
-      VNC_PW: password
-    volumes:
-      - ~/workdir/THREE:/home/kasm-user/data
-    labels:
-      - "traefik.http.routers.workbench.rule=Host(`workbench.docker.localhost`)"
-
   backend:
     build: ./backend
     ports:
@@ -37,3 +22,48 @@ services:
       - ./backend:/app
     labels:
       - "traefik.http.routers.backend.rule=Host(`backend.docker.localhost`)"
+
+  workflow:
+    image: n8nio/n8n
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - N8N_SECURE_COOKIE=false
+    ports:
+      - "5678:5678"
+    restart: always
+    command: "start --tunnel"
+    labels:
+      - "traefik.http.routers.workflow.rule=Host(`workflow.docker.localhost`)"
+
+  ubuntu:
+    # You have to build it first in workbenches/ubuntu or use the build context
+    image: nicedexter/ubuntu-focal-desktop:1.15.0
+    # build: 
+    #   context: ./workbenches/ubuntu/
+    shm_size: 512m
+    ports:
+      - "6901:6901"
+    environment:
+      VNC_PW: password
+    volumes:
+      - ~/workdir/THREE:/home/kasm-user/data
+    labels:
+      - "traefik.http.routers.workbench.rule=Host(`ubuntu.docker.localhost`)"
+
+  db:
+    hostname: db
+    image: postgres:14
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+
+volumes:
+  n8n_data:
+  db_data:
