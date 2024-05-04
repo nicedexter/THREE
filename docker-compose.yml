@@ -88,6 +88,37 @@ services:
     labels:
       - "traefik.http.routers.gitlab.rule=Host(`gitlab.docker.localhost`)"
 
+  vscode:
+    image: kasmweb/vs-code:1.15.0
+    shm_size: 512m
+    ports:
+      - "6904:6901"
+    environment:
+      VNC_PW: password
+    volumes:
+      - ~/workdir/THREE:/home/kasm-user/data
+    labels:
+      - "traefik.http.routers.vscode.rule=Host(`vscode.docker.localhost`)"
+
+  linuxserver:
+    image: lscr.io/linuxserver/kasm:latest
+    container_name: kasm
+    privileged: true
+    environment:
+      - KASM_PORT=443
+      # - DOCKER_HUB_USERNAME=USER #optional
+      # - DOCKER_HUB_PASSWORD=PASS #optional
+      # - DOCKER_MTU=1500 #optional
+    volumes:
+      - linuxserver_data:/opt
+      # - /path/to/profiles:/profiles #optional
+      # - /dev/input:/dev/input #optional
+      # - /run/udev/data:/run/udev/data #optional
+    ports:
+      - 3333:3000
+      - 6905:443
+    restart: unless-stopped
+
   db:
     hostname: db
     image: postgres:14
@@ -104,3 +135,4 @@ services:
 volumes:
   n8n_data:
   db_data:
+  linuxserver_data:
