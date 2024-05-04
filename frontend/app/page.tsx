@@ -2,15 +2,23 @@
 "use client"
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import {
   Home,
   LineChart,
   Package,
   Package2,
-  Settings,
-  ShoppingCart,
-  Users2
+  Settings, Users2, Users,
+  Sun, Moon
 } from "lucide-react"
 import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
 
@@ -23,8 +31,9 @@ import {
 import { useState } from "react"
 
 export default function Dashboard() {
-
+  const { setTheme } = useTheme()
   const [url, setUrl] = useState('https://localhost:6901/')
+  const [sessionName, setSessionName] = useState('Office')
   const [sidebarVisible, setSidebarVisible] = useState(true)
 
   const handleIframeClick = () => {
@@ -34,14 +43,18 @@ export default function Dashboard() {
   const handleIframUrl = (nb: number) => {
     if (nb === 1) {
       setUrl('https://localhost:6901/')
+      setSessionName('Office')
     } else if (nb === 2) {
       setUrl('https://localhost:6902')
+      setSessionName('Terminal')
     } else if (nb === 3) {
       setUrl('https://localhost:6903')
+      setSessionName('Gitlab')
     } else if (nb === 4) {
       setUrl('https://localhost:6904')
+      setSessionName('VS Code')
     }
-    setSidebarVisible(!sidebarVisible)
+    // setSidebarVisible(!sidebarVisible)
   }
 
   const handleClickWorkflow = () => {
@@ -142,16 +155,47 @@ export default function Dashboard() {
               </nav>
             </aside>
           </TooltipProvider >
-          <div className="flex flex-col sm:pl-14 w-96 ">
+          <div className="flex flex-col sm:pl-14">
             <div className="flex items-start">
-              <main className="flex-0 gap-4 p-4 bg-slate-800 min-h-screen">
+              <main className="flex-0 gap-4 p-4 bg-slate-800 min-h-screen w-64">
                 <div className='flex flex-col'>
                   <p className=" center p-4">Projets</p>
-                  <p className="center p-4">My first project</p>
+                  <div className="flex h-full max-h-screen flex-col gap-2 mb-4">
+                    <div className="flex-1">
+                      <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                        <Link href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                          <Home className="h-4 w-4" />
+                          Dashboard
+                          <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                            6
+                          </Badge>
+                        </Link>
+
+                        <Link href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                          <Users className="h-4 w-4" />
+                          Project 98
+                        </Link>
+                        <Link href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                          <LineChart className="h-4 w-4" />
+                          Project 101
+                        </Link>
+                        <Link href="#"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                          <Package className="h-4 w-4" />
+                          My first project{" "}
+                        </Link>
+                      </nav>
+                    </div>
+                  </div>
+
+
                   <div className="flex flex-wrap gap-4">
                     <Button variant="secondary"
-                      className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 128, height: 128 }}
+                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 80, height: 80 }}
                       onClick={() => handleIframUrl(1)}
 
                     >
@@ -159,81 +203,114 @@ export default function Dashboard() {
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 64, height: 64 }}
+                      style={{ width: 80, height: 80 }}
                       onClick={() => handleIframUrl(2)}
                     >
                       Terminal
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 64, height: 64 }}
+                      style={{ width: 80, height: 80 }}
                       onClick={() => handleIframUrl(3)}
                     >
                       Gitlab
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 64, height: 64 }}
+                      style={{ width: 80, height: 80 }}
                       onClick={() => handleIframUrl(4)}
                     >
                       vs code
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 64, height: 64 }}
+                      style={{ width: 80, height: 80 }}
                       onClick={handleClickWorkflow}
                     >
                       Workflow
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 64, height: 64 }}
+                      style={{ width: 80, height: 80 }}
                     >
                       New App
                     </Button>
                   </div>
                 </div>
+                <div>
+
+
+<DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+                </div>
               </main>
-              <main className=" backdrop-blur-sm bg-white/30 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-                <div className="mx-auto grid w-full max-w-6xl gap-2">
-                  <h1 className="text-3xl font-semibold">Office</h1>
+              <main className="backdrop-blur-sm bg-white/30 flex min-h-[calc(100vh_-_theme(spacing.16))] h-full flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+                <div className="flex justify-between items-center">
+                  <h1 className="text-3xl font-semibold">{sessionName}</h1>
+                  <Button variant="ghost"
+                    className=" text-white text-xl"
+                    style={{ width: 80, height: 80 }}
+                    onClick={() => setSidebarVisible(false)}
+                  >
+                    X
+                  </Button>
                 </div>
                 <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                   <div className="mb-6">
                     <div className="space-y-2 flex flex-col">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-semibold mb-2">Session</h3>
+                        <h3 className="font-semibold mb-1">Session</h3>
                         <label className="flex items-center space-x-2">
                           <input type="checkbox" className="form-checkbox" />
                           <span>Private</span>
                         </label>
                       </div>
                       <div className="space-y-2 flex flex-col">
-                        <Button variant="secondary">Fullscreen</Button>
-                        <Button variant="secondary">Screenshot</Button>
-                        <Button variant="secondary">Quit</Button>
-                        <Button variant="secondary">Pause</Button>
-                        <Button variant="secondary">Restart</Button>
+                        <Button variant="outline" className="text-slate-700">Fullscreen</Button>
+                        <Button variant="outline" className="text-slate-700">Screenshot</Button>
+                        <Button variant="outline" className="text-slate-700">Quit</Button>
+                        <Button variant="outline" className="text-slate-700">Pause</Button>
+                        <Button variant="outline" className="text-slate-700">Restart</Button>
                       </div>
                     </div>
-                    <div className="space-y-2 flex flex-col">
+                    <div className="space-y-2 flex flex-col  mt-4">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-semibold mb-2">Data</h3>
+                        <h3 className="font-semibold mb-1">Data</h3>
                       </div>
                       <div className="space-y-2 flex flex-col">
-                        <Button variant="secondary">Download</Button>
-                        <Button variant="secondary">Upload</Button>
+                        <Button variant="outline" className="text-slate-700">Download</Button>
+                        <Button variant="outline" className="text-slate-700">Upload</Button>
                       </div>
                     </div>
-                    <div className="mb-6">
-                      <h3 className="font-semibold mb-2">Container</h3>
-                      <div className="space-y-2 flex flex-col">
-                        <Button variant="secondary">get logs</Button>
-                        <Button variant="secondary">delete session</Button>
+                    <div className="space-y-2 flex flex-col mt-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-semibold mb-1">Container</h3>
+                      </div>
+                      <div className="space-y-2 flex flex-col ">
+                        <Button variant="outline" className="text-slate-700">get logs</Button>
+                        <Button variant="outline" className="text-slate-700">delete session</Button>
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-2">Resources</h3>
+                      <h3 className="font-semibold mb-1 mt-4">Resources</h3>
                       <p>1 gb, 32 Ram</p>
                       <p>running since 5 h</p>
                     </div>
