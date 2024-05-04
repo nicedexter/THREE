@@ -74,3 +74,19 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .sidebar-hide {
+    transform: translateX(-99%);
+    transition: transform 0.5s;
+  }
+
+  .sidebar-reveal {
+    transform: translateX(0);
+    transition: transform 0.5s;
+  }
+  
+  .iframe-overlay-button-hide {
+    display: none;
+  }
+
+  
