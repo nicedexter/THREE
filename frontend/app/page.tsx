@@ -22,46 +22,6 @@ import {
 } from "@/components/ui/tooltip"
 import { useState } from "react"
 
-const accounts = [
-  {
-    label: "Alicia Koch",
-    email: "alicia@example.com",
-    icon: (
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <title>Vercel</title>
-        <path d="M24 22.525H0l12-21.05 12 21.05z" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    label: "Alicia Koch",
-    email: "alicia@gmail.com",
-    icon: (
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <title>Gmail</title>
-        <path
-          d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
-          fill="currentColor"
-        />
-      </svg>
-    ),
-  },
-  {
-    label: "Alicia Koch",
-    email: "alicia@me.com",
-    icon: (
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <title>iCloud</title>
-        <path
-          d="M13.762 4.29a6.51 6.51 0 0 0-5.669 3.332 3.571 3.571 0 0 0-1.558-.36 3.571 3.571 0 0 0-3.516 3A4.918 4.918 0 0 0 0 14.796a4.918 4.918 0 0 0 4.92 4.914 4.93 4.93 0 0 0 .617-.045h14.42c2.305-.272 4.041-2.258 4.043-4.589v-.009a4.594 4.594 0 0 0-3.727-4.508 6.51 6.51 0 0 0-6.511-6.27z"
-          fill="currentColor"
-        />
-      </svg>
-    ),
-  },
-]
-
-
 export default function Dashboard() {
 
   const [url, setUrl] = useState('https://localhost:6901/')
@@ -78,6 +38,8 @@ export default function Dashboard() {
       setUrl('https://localhost:6902')
     } else if (nb === 3) {
       setUrl('https://localhost:6903')
+    } else if (nb === 4) {
+      setUrl('https://localhost:6904')
     }
     setSidebarVisible(!sidebarVisible)
   }
@@ -99,10 +61,10 @@ export default function Dashboard() {
       />
       <div className={`absolute  top-0 left-0 w-full h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
       </div>
-      <div className="flex items-start justify-start bg-slate-800">
-        <div className={`bg-slate-800 flex flex-col fixed top-0 left-0 text-white h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
+      <div className="flex items-start justify-start bg-transparent">
+        <div className={`flex flex-col fixed top-0 left-0 text-white h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
           <TooltipProvider >
-            <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-600 sm:flex">
+            <aside className="bg-slate-800 fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-600 sm:flex">
               <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 ">
                 <Link
                   href="#"
@@ -137,7 +99,7 @@ export default function Dashboard() {
                   </TooltipTrigger>
                   <TooltipContent side="right">Projects</TooltipContent>
                 </Tooltip>
-      
+
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
@@ -150,7 +112,7 @@ export default function Dashboard() {
                   </TooltipTrigger>
                   <TooltipContent side="right">Data</TooltipContent>
                 </Tooltip>
-                
+
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Link
@@ -180,14 +142,13 @@ export default function Dashboard() {
               </nav>
             </aside>
           </TooltipProvider >
-          <div className="flex flex-col  sm:py-4 sm:pl-14">
-
+          <div className="flex flex-col sm:pl-14 w-96 ">
             <div className="flex items-start">
-              <main className="flex-0 gap-4 p-4 ">
+              <main className="flex-0 gap-4 p-4 bg-slate-800 min-h-screen">
                 <div className='flex flex-col'>
                   <p className=" center p-4">Projets</p>
                   <p className="center p-4">My first project</p>
-                  <div className='center w-full'>
+                  <div className="flex flex-wrap gap-4">
                     <Button variant="secondary"
                       className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       style={{ width: 128, height: 128 }}
@@ -196,45 +157,44 @@ export default function Dashboard() {
                     >
                       Office
                     </Button>
-                  </div>
-                  <div>
                     <Button variant="secondary"
-                      className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 96, height: 96 }}
+                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 64, height: 64 }}
                       onClick={() => handleIframUrl(2)}
                     >
                       Terminal
                     </Button>
-                  </div>
-                  <div>
                     <Button variant="secondary"
-                      className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 96, height: 96 }}
+                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 64, height: 64 }}
                       onClick={() => handleIframUrl(3)}
                     >
                       Gitlab
                     </Button>
-                  </div>
-                  <div>
                     <Button variant="secondary"
-                      className="m-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 96, height: 96 }}
+                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 64, height: 64 }}
+                      onClick={() => handleIframUrl(4)}
+                    >
+                      vs code
+                    </Button>
+                    <Button variant="secondary"
+                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 64, height: 64 }}
                       onClick={handleClickWorkflow}
                     >
                       Workflow
                     </Button>
-                  </div>
-                  <div>
                     <Button variant="secondary"
-                      className="m-4 bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 96, height: 96 }}
+                      className="text-xs bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                      style={{ width: 64, height: 64 }}
                     >
                       New App
                     </Button>
                   </div>
                 </div>
               </main>
-              <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+              <main className=" backdrop-blur-sm bg-white/30 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
                   <h1 className="text-3xl font-semibold">Office</h1>
                 </div>
@@ -285,7 +245,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-          <Button variant="secondary" className="z-50 bg-gray-500 hover:bg-gray-700 text-white" onClick={handleIframeClick}>:::</Button>
+        <Button variant="secondary" className="z-50 bg-gray-500 hover:bg-gray-700 text-white" onClick={handleIframeClick}>:::</Button>
       </div>
     </div>
 
