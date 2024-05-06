@@ -14,7 +14,12 @@ import {
   Package,
   Package2,
   Settings, Users2, Users,
-  Sun, Moon
+  Sun, Moon,
+  MonitorPause,
+  Maximize,
+  RotateCcw,
+  LogOut,
+  Wallpaper
 } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -28,7 +33,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function Dashboard() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -67,6 +72,10 @@ export default function Dashboard() {
       setUrl('https://localhost:6904')
       setSessionName('VS Code')
     }
+    else if (nb === 5) {
+      setUrl('http://localhost:3131')
+      setSessionName('Flowbite')
+    }
     // setSidebarVisible(!sidebarVisible)
   }
 
@@ -93,10 +102,10 @@ export default function Dashboard() {
         allow="autoplay; microphone; camera; clipboard-read; clipboard-write; window-management;"
         ref={iframeRef}
       />
-      <div className={`absolute  top-0 left-0 w-full h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
+      <div className={`absolute top-0 left-0 w-full h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
       </div>
-      <div className="flex items-start justify-start bg-transparent">
-        <div className={`flex flex-col fixed top-0 left-0 text-white h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
+      <div className="flex items-start justify-start bg-transparent w-full">
+        <div className={`flex flex-col fixed top-0 left-0 text-white w-full h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
           <TooltipProvider >
             <aside className="bg-slate-800 fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-600 sm:flex">
               <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 ">
@@ -176,15 +185,24 @@ export default function Dashboard() {
               </nav>
             </aside>
           </TooltipProvider >
-          <div className="flex flex-col sm:pl-14">
-            <div className="flex items-start">
+          <div className="flex flex-col sm:pl-14 w-full">
+            <div className="flex items-start w-full">
               <main className="flex-0 gap-4 p-4 bg-slate-800 min-h-screen w-64">
                 <div className='flex flex-col'>
-                  <p className=" center p-4">Projets</p>
+                  <div className='flex justify-between items-center'>
+                    <p className=" center p-4">Projets</p>
+                    <Button variant="ghost"
+                      className=" text-white text-md"
+                      style={{ width: 80, height: 80 }}
+                      onClick={() => setSidebarVisible(false)}
+                    >
+                      X
+                    </Button>
+                  </div>
                   <div className="flex h-full max-h-screen flex-col gap-2 mb-4">
                     <div className="flex-1">
                       <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                        <Link href="#"
+                        {/* <Link href="#"
                           className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                           <Home className="h-4 w-4" />
                           Dashboard
@@ -202,7 +220,7 @@ export default function Dashboard() {
                           className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                           <LineChart className="h-4 w-4" />
                           Project 101
-                        </Link>
+                        </Link> */}
                         <Link href="#"
                           className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                           <Package className="h-4 w-4" />
@@ -246,9 +264,9 @@ export default function Dashboard() {
                     <Button variant="secondary"
                       className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       style={{ width: 80, height: 80 }}
-                      onClick={handleClickWorkflow}
+                      onClick={() => handleIframUrl(5)}
                     >
-                      Workflow
+                      Flowbite
                     </Button>
                     <Button variant="secondary"
                       className="text-xs bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
@@ -258,32 +276,30 @@ export default function Dashboard() {
                     </Button>
                   </div>
                 </div>
-                <div>
-
-
-<DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+                <div className="mt-32">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon">
+                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <span className="sr-only">Toggle theme</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setTheme("light")}>
+                        Light
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("dark")}>
+                        Dark
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme("system")}>
+                        System
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </main>
-              <main className="backdrop-blur-sm bg-white/30 flex min-h-[calc(100vh_-_theme(spacing.16))] h-full flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+              <main className="backdrop-blur-md flex min-h-[calc(100vh_-_theme(spacing.16))] h-full w-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
                 <div className="flex justify-between items-center">
                   <h1 className="text-3xl font-semibold">{sessionName}</h1>
                   <Button variant="ghost"
@@ -294,7 +310,7 @@ export default function Dashboard() {
                     X
                   </Button>
                 </div>
-                <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                <div className="mx-auto grid w-full items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                   <div className="mb-6">
                     <div className="space-y-2 flex flex-col">
                       <div className="flex items-center justify-between">
@@ -305,11 +321,11 @@ export default function Dashboard() {
                         </label>
                       </div>
                       <div className="space-y-2 flex flex-col">
-                        <Button variant="outline" className="text-slate-700">Fullscreen</Button>
-                        <Button variant="outline" className="text-slate-700">Screenshot</Button>
-                        <Button variant="outline" className="text-slate-700">Quit</Button>
-                        <Button variant="outline" className="text-slate-700">Pause</Button>
-                        <Button variant="outline" className="text-slate-700">Restart</Button>
+                        <Button variant="outline" className="text-slate-700" onClick={handleFullScreen}><Maximize className="mr-2 h-4 w-4" />Fullscreen</Button>
+                        <Button variant="outline" className="text-slate-700"><Wallpaper className="mr-2 h-4 w-4" />Screenshot</Button>
+                        <Button variant="outline" className="text-slate-700"><LogOut className="mr-2 h-4 w-4" /> Quit</Button>
+                        <Button variant="outline" className="text-slate-700"><MonitorPause className="mr-2 h-4 w-4" /> Pause</Button>
+                        <Button variant="outline" className="text-slate-700"><RotateCcw className="mr-2 h-4 w-4" />Restart</Button>
                       </div>
                     </div>
                     <div className="space-y-2 flex flex-col  mt-4">
@@ -317,8 +333,8 @@ export default function Dashboard() {
                         <h3 className="font-semibold mb-1">Data</h3>
                       </div>
                       <div className="space-y-2 flex flex-col">
-                        <Button variant="outline" className="text-slate-700">Download</Button>
-                        <Button variant="outline" className="text-slate-700">Upload</Button>
+                        <Button variant="outline" className="text-slate-700"><Wallpaper className="mr-2 h-4 w-4" />Download</Button>
+                        <Button variant="outline" className="text-slate-700"><Wallpaper className="mr-2 h-4 w-4" />Upload</Button>
                       </div>
                     </div>
                     <div className="space-y-2 flex flex-col mt-4">
@@ -326,8 +342,8 @@ export default function Dashboard() {
                         <h3 className="font-semibold mb-1">Container</h3>
                       </div>
                       <div className="space-y-2 flex flex-col ">
-                        <Button variant="outline" className="text-slate-700">get logs</Button>
-                        <Button variant="outline" className="text-slate-700">delete session</Button>
+                        <Button variant="outline" className="text-slate-700"><Wallpaper className="mr-2 h-4 w-4" />get logs</Button>
+                        <Button variant="outline" className="text-slate-700"><Wallpaper className="mr-2 h-4 w-4" />delete session</Button>
                       </div>
                     </div>
                     <div>
