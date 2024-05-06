@@ -13,7 +13,7 @@ import {
   LineChart,
   Package,
   Package2,
-  Settings, Users2, Users,
+  Settings, Users2,
   Sun, Moon,
   MonitorPause,
   Maximize,
@@ -22,7 +22,6 @@ import {
   Wallpaper
 } from "lucide-react"
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
@@ -91,23 +90,16 @@ export default function Dashboard() {
   }
 
   const handleIframUrl = (nb: number) => {
-
     const w = workbenches.find(w => w.id === nb)
-
     if (!w) return
-    setWorkbench(w)
-  }
 
-  const handleClickWorkflow = () => {
-    fetch('http://172.17.0.1:5678/webhook-test/fe4740c0-40d9-4f8f-91fb-1c791c800ad8').then(data => console.log(data))
+    setWorkbench(w)
   }
 
   const handleFullScreen = () => {
     setFullScreen(!fullScreen)
   }
 
-
-  const isCollapsed = false
   return (
     <div className="w-full h-screen">
       <iframe
@@ -221,35 +213,14 @@ export default function Dashboard() {
                   <div className="flex h-full max-h-screen flex-col gap-2 mb-4">
                     <div className="flex-1">
                       <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                        {/* <Link href="#"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                          <Home className="h-4 w-4" />
-                          Dashboard
-                          <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                            6
-                          </Badge>
-                        </Link>
-
-                        <Link href="#"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                          <Users className="h-4 w-4" />
-                          Project 98
-                        </Link>
-                        <Link href="#"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                          <LineChart className="h-4 w-4" />
-                          Project 101
-                        </Link> */}
                         <Link href="#"
                           className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                           <Package className="h-4 w-4" />
-                          My first project{" "}
+                          My first project
                         </Link>
                       </nav>
                     </div>
                   </div>
-
-
                   <div className="flex flex-wrap gap-4">
                     {workbenches.map(w => (
                       <Button variant="secondary"
@@ -354,6 +325,4 @@ export default function Dashboard() {
         <Button variant="secondary" className="z-50 bg-gray-500 hover:bg-gray-700 text-white" onClick={handleIframeClick}>:::</Button>
       </div>
     </div>
-
-  )
-}
+  )}
