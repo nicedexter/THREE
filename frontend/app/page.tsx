@@ -35,11 +35,43 @@ import {
 } from "@/components/ui/tooltip"
 import { useEffect, useRef, useState } from "react"
 
+const workbenches = [
+  {
+    id: 1,
+    name: 'Office',
+    url: 'https://localhost:6901/'
+  },
+  {
+    id: 2,
+    name: 'Terminal',
+    url: 'https://localhost:6902'
+  },
+  {
+    id: 3,
+    name: 'Gitlab',
+    url: 'https://localhost:6903'
+  },
+  {
+    id: 4,
+    name: 'VS Code',
+    url: 'https://localhost:6904'
+  },
+  {
+    id: 5,
+    name: 'Flowbite',
+    url: 'http://localhost:3131'
+  },
+  {
+    id: 6,
+    name: 'Workflow',
+    url: 'http://localhost:5678'
+  }
+]
+
 export default function Dashboard() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { setTheme } = useTheme()
-  const [url, setUrl] = useState('https://localhost:6901/')
-  const [sessionName, setSessionName] = useState('Office')
+  const [workbench, setWorkbench] = useState(workbenches[0])  
   const [sidebarVisible, setSidebarVisible] = useState(true)
   const [fullScreen, setFullScreen] = useState(false)
 
@@ -59,24 +91,11 @@ export default function Dashboard() {
   }
 
   const handleIframUrl = (nb: number) => {
-    if (nb === 1) {
-      setUrl('https://localhost:6901/')
-      setSessionName('Office')
-    } else if (nb === 2) {
-      setUrl('https://localhost:6902')
-      setSessionName('Terminal')
-    } else if (nb === 3) {
-      setUrl('https://localhost:6903')
-      setSessionName('Gitlab')
-    } else if (nb === 4) {
-      setUrl('https://localhost:6904')
-      setSessionName('VS Code')
-    }
-    else if (nb === 5) {
-      setUrl('http://localhost:3131')
-      setSessionName('Flowbite')
-    }
-    // setSidebarVisible(!sidebarVisible)
+
+    const w = workbenches.find(w => w.id === nb)
+
+    if (!w) return
+    setWorkbench(w)
   }
 
   const handleClickWorkflow = () => {
@@ -92,7 +111,7 @@ export default function Dashboard() {
   return (
     <div className="w-full h-screen">
       <iframe
-        src={url}
+        src={workbench.url}
         frameBorder="0"
         width="100%"
         height="100%"
@@ -232,42 +251,15 @@ export default function Dashboard() {
 
 
                   <div className="flex flex-wrap gap-4">
-                    <Button variant="secondary"
-                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 80, height: 80 }}
-                      onClick={() => handleIframUrl(1)}
-
-                    >
-                      Office
-                    </Button>
-                    <Button variant="secondary"
-                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 80, height: 80 }}
-                      onClick={() => handleIframUrl(2)}
-                    >
-                      Terminal
-                    </Button>
-                    <Button variant="secondary"
-                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 80, height: 80 }}
-                      onClick={() => handleIframUrl(3)}
-                    >
-                      Gitlab
-                    </Button>
-                    <Button variant="secondary"
-                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 80, height: 80 }}
-                      onClick={() => handleIframUrl(4)}
-                    >
-                      vs code
-                    </Button>
-                    <Button variant="secondary"
-                      className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                      style={{ width: 80, height: 80 }}
-                      onClick={() => handleIframUrl(5)}
-                    >
-                      Flowbite
-                    </Button>
+                    {workbenches.map(w => (
+                      <Button variant="secondary"
+                        className="text-xs bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                        style={{ width: 80, height: 80 }}
+                        onClick={() => handleIframUrl(w.id)}
+                      >
+                        {w.name}
+                      </Button>
+                    ))}
                     <Button variant="secondary"
                       className="text-xs bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       style={{ width: 80, height: 80 }}
@@ -301,7 +293,7 @@ export default function Dashboard() {
               </main>
               <main className="backdrop-blur-md flex min-h-[calc(100vh_-_theme(spacing.16))] h-full w-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-3xl font-semibold">{sessionName}</h1>
+                  <h1 className="text-3xl font-semibold">{workbench.name}</h1>
                   <Button variant="ghost"
                     className=" text-white text-xl"
                     style={{ width: 80, height: 80 }}
