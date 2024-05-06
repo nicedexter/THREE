@@ -31,6 +31,21 @@ app.get('/services', (req, res) => {
       ]
     },
     {
+      "id": 789019,
+      "name": "API Service",
+      "description": "This is an api service available for the project",
+      "status": "active",
+      "documentation": "",
+      "interfaces": [
+        {
+          "id": 788015,
+          "type": "https",
+          "endpoint": "172.17.0.1:4000/api-docs",
+          "documentation": ""
+        }
+      ]
+    },
+    {
       "id": 789014,
       "name": "Postgres Service",
       "description": "This is a database service available for the project",
