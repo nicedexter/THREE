@@ -31,10 +31,23 @@ import {
 import { useState } from "react"
 
 export default function Dashboard() {
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   const { setTheme } = useTheme()
   const [url, setUrl] = useState('https://localhost:6901/')
   const [sessionName, setSessionName] = useState('Office')
   const [sidebarVisible, setSidebarVisible] = useState(true)
+  const [fullScreen, setFullScreen] = useState(false)
+
+  useEffect(() => {
+    if (fullScreen) {
+      iframeRef?.current?.requestFullscreen()
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+          setFullScreen(false)
+        }
+      })
+    }
+  }, [fullScreen])
 
   const handleIframeClick = () => {
     setSidebarVisible(!sidebarVisible)
@@ -61,6 +74,11 @@ export default function Dashboard() {
     fetch('http://172.17.0.1:5678/webhook-test/fe4740c0-40d9-4f8f-91fb-1c791c800ad8').then(data => console.log(data))
   }
 
+  const handleFullScreen = () => {
+    setFullScreen(!fullScreen)
+  }
+
+
   const isCollapsed = false
   return (
     <div className="w-full h-screen">
@@ -71,6 +89,9 @@ export default function Dashboard() {
         height="100%"
         className="absolute top-0 left-0 w-full h-screen overflow-hidden"
         onClick={handleIframeClick}
+        allowFullScreen={true}
+        allow="autoplay; microphone; camera; clipboard-read; clipboard-write; window-management;"
+        ref={iframeRef}
       />
       <div className={`absolute  top-0 left-0 w-full h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
       </div>
