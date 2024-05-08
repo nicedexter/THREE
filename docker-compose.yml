@@ -60,6 +60,16 @@ services:
     labels:
       - "traefik.http.routers.workbench.rule=Host(`ubuntu.docker.localhost`)"
 
+  xpra:
+    build: 
+      context: ./workbenches/xpra/
+    ports:
+      - "6907:8080"
+    stdin_open: true
+    volumes:
+      - ~/workdir/THREE:/home/user/
+    tty: true
+
   terminal:
     image: kasmweb/terminal:1.15.0
     shm_size: 512m
@@ -89,7 +99,11 @@ services:
       - "traefik.http.routers.gitlab.rule=Host(`gitlab.docker.localhost`)"
 
   vscode:
-    image: kasmweb/vs-code:1.15.0
+    # image: kasmweb/vs-code:1.15.0
+    # image: nicedexter/vs-code
+    build:
+      context: ./workbenches/workspaces-images/
+      dockerfile: dockerfile-kasm-vs-code
     shm_size: 512m
     ports:
       - "6904:6901"
@@ -100,24 +114,32 @@ services:
     labels:
       - "traefik.http.routers.vscode.rule=Host(`vscode.docker.localhost`)"
 
-  linuxserver:
-    image: lscr.io/linuxserver/kasm:latest
-    container_name: kasm
-    privileged: true
-    environment:
-      - KASM_PORT=443
-      # - DOCKER_HUB_USERNAME=USER #optional
-      # - DOCKER_HUB_PASSWORD=PASS #optional
-      # - DOCKER_MTU=1500 #optional
-    volumes:
-      - linuxserver_data:/opt
-      # - /path/to/profiles:/profiles #optional
-      # - /dev/input:/dev/input #optional
-      # - /run/udev/data:/run/udev/data #optional
+  flowise:
+    image: flowiseai/flowise:latest
     ports:
-      - 3333:3000
-      - 6905:443
-    restart: unless-stopped
+      - "3131:3000"
+    volumes:
+      - flowise_data:/root/.flowise
+    command: /bin/sh -c "sleep 3; flowise start"
+
+
+  # linuxserver:
+  #   image: lscr.io/linuxserver/kasm:latest
+  #   privileged: true
+  #   environment:
+  #     - KASM_PORT=443
+  #     # - DOCKER_HUB_USERNAME=USER #optional
+  #     # - DOCKER_HUB_PASSWORD=PASS #optional
+  #     # - DOCKER_MTU=1500 #optional
+  #   volumes:
+  #     - linuxserver_data:/opt
+  #     # - /path/to/profiles:/profiles #optional
+  #     # - /dev/input:/dev/input #optional
+  #     # - /run/udev/data:/run/udev/data #optional
+  #   ports:
+  #     - 3333:3000
+  #     - 6905:443
+  #   restart: unless-stopped
 
   db:
     hostname: db
@@ -136,3 +158,4 @@ volumes:
   n8n_data:
   db_data:
   linuxserver_data:
+  flowise_data:

@@ -64,6 +64,11 @@ const workbenches = [
     id: 6,
     name: 'Workflow',
     url: 'http://localhost:5678'
+  },
+  {
+    id: 7,
+    name: 'XPra',
+    url: 'http://localhost:6907'
   }
 ]
 
@@ -98,6 +103,7 @@ export default function Dashboard() {
 
   const handleFullScreen = () => {
     setFullScreen(!fullScreen)
+    setSidebarVisible(!sidebarVisible)
   }
 
   return (
