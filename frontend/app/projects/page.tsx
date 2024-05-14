@@ -26,8 +26,8 @@ export default function Project() {
     const [fullScreen, setFullScreen] = useState(false)
 
     const client = new Client()
-        .setEndpoint('http://localhost:8000/v1')
-        .setProject('663b87b700245fa97b2d')
+        .setEndpoint('http://localhost:8081/v1')
+        .setProject('66438e7d0020c4ad0367')
 
     async function init() {
         const databases = new Databases(client)
@@ -190,7 +190,6 @@ export default function Project() {
                                                         {project?.name}
                                                     </Link>
                                                 ))}
-
                                             </nav>
                                         </div>
                                     </div>

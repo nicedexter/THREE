@@ -1,4 +1,3 @@
-
 "use client"
 
 import {
@@ -7,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
 import {
   Home,
   LineChart,
@@ -23,9 +21,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useTheme } from "next-themes"
-
 import { Button } from "@/components/ui/button"
-
 import {
   Tooltip,
   TooltipContent,
@@ -69,15 +65,21 @@ const workbenches = [
     id: 7,
     name: 'XPra',
     url: 'http://localhost:6907'
+  },
+  {
+    id: 8,
+    name: 'Supabase',
+    url: 'http://localhost:8000'
   }
 ]
 
 export default function Dashboard() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { setTheme } = useTheme()
-  const [workbench, setWorkbench] = useState(workbenches[0])  
+  const [workbench, setWorkbench] = useState(workbenches[0])
   const [sidebarVisible, setSidebarVisible] = useState(true)
   const [fullScreen, setFullScreen] = useState(false)
+
 
   useEffect(() => {
     if (fullScreen) {
@@ -99,6 +101,7 @@ export default function Dashboard() {
     if (!w) return
 
     setWorkbench(w)
+    setSidebarVisible(!sidebarVisible)
   }
 
   const handleFullScreen = () => {
@@ -107,103 +110,105 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="w-full h-screen">
+    <div className="h-screen">
+      <TooltipProvider >
+        <aside className="bg-slate-800 fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-600 sm:flex">
+          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 ">
+            <Link
+              href="#"
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+            >
+              <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+              <span className="sr-only">CHORUS</span>
+            </Link>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="flex h-9 w-9 items-center 
+                      justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <Home className="h-5 w-5" />
+                  <span className="sr-only">My Space</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">My Space</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                  onClick={handleIframeClick}
+                >
+                  <Users2 className="h-5 w-5" />
+                  <span className="sr-only">Projects</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Projects</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <Package className="h-5 w-5" />
+                  <span className="sr-only">Data</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Data</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <LineChart className="h-5 w-5" />
+                  <span className="sr-only">Analytics</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Analytics</TooltipContent>
+            </Tooltip>
+          </nav>
+          <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  <Settings className="h-5 w-5" />
+                  <span className="sr-only">Settings</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Settings</TooltipContent>
+            </Tooltip>
+          </nav>
+        </aside>
+      </TooltipProvider >
       <iframe
         src={workbench.url}
+        
         frameBorder="0"
         width="100%"
         height="100%"
-        className="absolute top-0 left-0 w-full h-screen overflow-hidden"
+        className="absolute top-0 left-14 h-screen overflow-hidden"
         onClick={handleIframeClick}
         allowFullScreen={true}
         allow="autoplay; microphone; camera; clipboard-read; clipboard-write; window-management;"
         ref={iframeRef}
       />
-      <div className={`absolute top-0 left-0 w-full h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
+      <div className={`absolute top-0 left-0  h-screen ${sidebarVisible ? '' : 'iframe-overlay-button-hide'}`} onClick={handleIframeClick}>
       </div>
-      <div className="flex items-start justify-start bg-transparent w-full">
-        <div className={`flex flex-col fixed top-0 left-0 text-white w-full h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
-          <TooltipProvider >
-            <aside className="bg-slate-800 fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-600 sm:flex">
-              <nav className="flex flex-col items-center gap-4 px-2 sm:py-5 ">
-                <Link
-                  href="#"
-                  className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-                >
-                  <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-                  <span className="sr-only">CHORUS</span>
-                </Link>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href="#"
-                      className="flex h-9 w-9 items-center 
-                      justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                    >
-                      <Home className="h-5 w-5" />
-                      <span className="sr-only">My Space</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">My Space</TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href="#"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                    >
-                      <Users2 className="h-5 w-5" />
-                      <span className="sr-only">Projects</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Projects</TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href="#"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                    >
-                      <Package className="h-5 w-5" />
-                      <span className="sr-only">Data</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Data</TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href="#"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                    >
-                      <LineChart className="h-5 w-5" />
-                      <span className="sr-only">Analytics</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Analytics</TooltipContent>
-                </Tooltip>
-              </nav>
-              <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href="#"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                    >
-                      <Settings className="h-5 w-5" />
-                      <span className="sr-only">Settings</span>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Settings</TooltipContent>
-                </Tooltip>
-              </nav>
-            </aside>
-          </TooltipProvider >
-          <div className="flex flex-col sm:pl-14 w-full">
-            <div className="flex items-start w-full">
+      <div className="flex items-start justify-start bg-transparent ">
+        <div className={`flex flex-col fixed top-0 left-0 text-white  h-screen ${sidebarVisible ? 'sidebar-reveal' : 'sidebar-hide'}`}>
+          <div className="flex flex-col sm:pl-14 ">
+            <div className="flex items-start ">
               <main className="flex-0 gap-4 p-4 bg-slate-800 min-h-screen w-64">
                 <div className='flex flex-col'>
                   <div className='flex justify-between items-center'>
@@ -268,7 +273,7 @@ export default function Dashboard() {
                   </DropdownMenu>
                 </div>
               </main>
-              <main className="backdrop-blur-md flex min-h-[calc(100vh_-_theme(spacing.16))] h-full w-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
+              {/* <main className="backdrop-blur-md flex min-h-[calc(100vh_-_theme(spacing.16))] h-full  flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
                 <div className="flex justify-between items-center">
                   <h1 className="text-3xl font-semibold">{workbench.name}</h1>
                   <Button variant="ghost"
@@ -279,7 +284,7 @@ export default function Dashboard() {
                     X
                   </Button>
                 </div>
-                <div className="mx-auto grid w-full items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                <div className="mx-auto grid  items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                   <div className="mb-6">
                     <div className="space-y-2 flex flex-col">
                       <div className="flex items-center justify-between">
@@ -324,11 +329,12 @@ export default function Dashboard() {
                   <div>
                   </div>
                 </div>
-              </main>
+              </main> */}
             </div>
           </div>
         </div>
-        <Button variant="secondary" className="z-50 bg-gray-500 hover:bg-gray-700 text-white" onClick={handleIframeClick}>:::</Button>
+        {/* <Button variant="secondary" className="z-50 bg-gray-500 hover:bg-gray-700 text-white" onClick={handleIframeClick}>:::</Button> */}
       </div>
     </div>
-  )}
+  )
+}

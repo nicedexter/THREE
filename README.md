@@ -1,16 +1,31 @@
 # THREE
 A CHORUS sandbox
 
+Various proof of concepts based on UI wireframes
+- XPra
+- Kasm 
+- Traefik
+- Appwriter
+- Express
+- Flowise (AI workflow)
+- n8n (workflow)
 
-See
-http://backend.docker.localhost/api-docs/
-https://localhost:6901/
-https://workbench.docker.localhost:6901/
+## Endpoints
 
+Frontend 
+http://localhost:3030  
+http://localhost:3030/projects
 
-https://doc.traefik.io/traefik/getting-started/quick-start/
+Workbenches (login to enable in frontend)  
+https://localhost:6901  kasm_user/password
 
-http://reverse-proxy.docker.localhost:8080/api/rawdata
-http://reverse-proxy.docker.localhost:8080/
+Appwriter (Backend)
+http://localhost:8081/ 
+
+http://localhost:4000
+
+Traefik (reverse proxy)
+http://localhost:8080/
+
 
 
